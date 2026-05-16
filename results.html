@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AEROAL - Search Results</title>
+  <link rel="stylesheet" href="style.css?v=20260219b" />
+</head>
+<body class="results-page">
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+  <main class="wrap results">
+    <section class="search-card">
+      <h1>Select your flight</h1>
+      <form id="searchForm" class="search-inline" action="results.html" method="get">
+        <div class="fld">
+          <label for="from">From</label>
+          <input id="from" name="from" type="text" placeholder="MOW / Moscow" autocomplete="on" />
+          <div class="suggest" id="fromSuggest"></div>
+        </div>
+
+        <button class="swap" type="button" id="swap" aria-label="swap">⇄</button>
+
+        <div class="fld">
+          <label for="to">To</label>
+          <input id="to" name="to" type="text" placeholder="DXB / Dubai" autocomplete="on" />
+          <div class="suggest" id="toSuggest"></div>
+        </div>
+
+        <div class="fld">
+          <label for="dep">Departure</label>
+          <input id="dep" name="date" type="date" />
+        </div>
+
+        <div class="fld">
+          <label for="firstName">Passenger first name</label>
+          <input id="firstName" name="first_name" type="text" placeholder="IVAN" autocomplete="given-name" />
+        </div>
+
+        <div class="fld">
+          <label for="lastName">Passenger last name</label>
+          <input id="lastName" name="last_name" type="text" placeholder="IVANOV" autocomplete="family-name" />
+        </div>
+
+        <div class="fld">
+          <label for="ret">Return</label>
+          <input id="ret" name="ret" type="date" />
+        </div>
+
+        <div class="fld">
+          <label for="pax">Passengers / Class</label>
+          <input id="pax" name="pax" type="text" value="1, Economy" readonly />
+          <div class="pax-pop" id="paxPop">
+            <div class="row">
+              <span>Adults</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="adults">1</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row">
+              <span>Children</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="children">0</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row">
+              <span>Infants</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="infants">0</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row classes">
+              <label><input type="radio" name="cls" value="economy" checked><span>Economy</span></label>
+              <label><input type="radio" name="cls" value="premium"><span>Comfort</span></label>
+              <label><input type="radio" name="cls" value="business"><span>Business</span></label>
+              <label><input type="radio" name="cls" value="first"><span>First</span></label>
+            </div>
+            <button type="button" class="btn-apply" id="paxApply">Apply</button>
+          </div>
+        </div>
+
+        <button class="btn-find" type="submit">Search</button>
+      </form>
+    </section>
+
+    <section>
+      <p class="meta">Best fares by date</p>
+      <h2 id="routeTitle">— → —</h2>
+      <p id="searchStatus" class="results-status">Ready to search flights.</p>
+      <div class="week" id="weekBar"></div>
+    </section>
+
+    <section class="flights" id="flightsList"></section>
+  </main>
+
+  <footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+
+  <script src="app.js?v=20260219c"></script>
+</body>
+</html>

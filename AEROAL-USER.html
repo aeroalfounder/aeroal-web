@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL USER</title>
+  <link rel="stylesheet" href="style.css?v=20260219b" />
+</head>
+<body class="auser-page">
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+  <main class="auser-shell">
+    <section class="card-soft auser-login">
+      <h1>AEROAL USER</h1>
+      <p>Enter password to view all bookings from database.</p>
+      <form id="auserForm" class="auser-form">
+        <input id="auserPassword" type="password" placeholder="Password" required />
+        <button type="submit" class="btn-primary">Open</button>
+      </form>
+      <p id="auserMsg" class="booking-message" aria-live="polite"></p>
+    </section>
+
+    <section id="auserPanel" class="hidden">
+      <section class="card-soft auser-toolbar">
+        <div>
+          <strong id="auserCount">0 bookings</strong>
+          <div class="meta">Source table: <span id="auserTable">-</span></div>
+        </div>
+        <button id="auserRefresh" type="button">Refresh</button>
+      </section>
+
+      <section id="auserList" class="auser-list"></section>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("auserForm");
+    const passInput = document.getElementById("auserPassword");
+    const msg = document.getElementById("auserMsg");
+    const panel = document.getElementById("auserPanel");
+    const countEl = document.getElementById("auserCount");
+    const tableEl = document.getElementById("auserTable");
+    const listEl = document.getElementById("auserList");
+    const refreshBtn = document.getElementById("auserRefresh");
+
+    function setMsg(text, isError = false){
+      msg.textContent = text;
+      msg.style.color = isError ? "#b42318" : "#166534";
+    }
+
+    function safe(v){
+      if (v === null || v === undefined) return "";
+      return String(v)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function rowCard(r){
+      const totalRub = Number(r.total_rub || 0);
+      const usd = totalRub * 0.011;
+      const amount = totalRub > 0 ? `${safe(totalRub)} RUB (~$${safe(usd.toFixed(2))})` : "-";
+      const route = `${safe(r.origin || "-")} → ${safe(r.destination || "-")}`;
+      const passenger = safe(r.passenger_name || r.last_name || "-");
+      return `
+        <article class="card-soft auser-card">
+          <div class="auser-grid">
+            <p><span>PNR</span><strong>${safe(r.pnr || "-")}</strong></p>
+            <p><span>Status</span><strong>${safe(r.status || "-")}</strong></p>
+            <p><span>Passenger</span><strong>${passenger}</strong></p>
+            <p><span>Route</span><strong>${route}</strong></p>
+            <p><span>Flight</span><strong>${safe(r.flight_number || "-")}</strong></p>
+            <p><span>Departure</span><strong>${safe(r.departure_time || "-")}</strong></p>
+            <p><span>Arrival</span><strong>${safe(r.arrival_time || "-")}</strong></p>
+            <p><span>Cabin</span><strong>${safe(r.cabin || "-")}</strong></p>
+            <p><span>Amount</span><strong>${amount}</strong></p>
+            <p><span>Created</span><strong>${safe(r.created_at || "-")}</strong></p>
+          </div>
+          <details>
+            <summary>Raw row data</summary>
+            <pre>${safe(JSON.stringify(r.raw || {}, null, 2))}</pre>
+          </details>
+        </article>
+      `;
+    }
+
+    async function loadRows(){
+      const password = passInput.value.trim();
+      if(!password){
+        setMsg("Enter password.", true);
+        return;
+      }
+
+      setMsg("Loading...");
+      try{
+        const res = await fetch("booking_api.php", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({action:"list", password})
+        });
+        const data = await res.json();
+        if(!res.ok || !data?.ok){
+          setMsg(data?.error || "Access denied.", true);
+          panel.classList.add("hidden");
+          return;
+        }
+
+        const rows = Array.isArray(data.rows) ? data.rows : [];
+        panel.classList.remove("hidden");
+        countEl.textContent = `${rows.length} booking(s)`;
+        tableEl.textContent = data?.meta?.table || "-";
+        listEl.innerHTML = rows.length ? rows.map(rowCard).join("") : `<article class="card-soft auser-card"><p>No bookings found.</p></article>`;
+        setMsg("Loaded.");
+      }catch(_e){
+        setMsg("Unable to load bookings.", true);
+      }
+    }
+
+    form.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      loadRows();
+    });
+
+    refreshBtn.addEventListener("click", loadRows);
+  </script>
+<footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+</body>
+</html>

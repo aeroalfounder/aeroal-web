@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL - Contacts</title>
+  <link rel="stylesheet" href="style.css?v=20260219e" />
+  <meta name="apple-maps-token" content="" />
+</head>
+<body class="contacts-page">
+  <header class="hdr">
+    <div class="hdr-left">
+      <button class="burger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="logo.png" alt="AEROAL" class="logo" />
+    </div>
+    <nav class="hdr-nav">
+      <a href="index.html">Home</a>
+      <a href="flights.html">Flights</a>
+      <a href="services.html">Services</a>
+      <a href="info.html">Info</a>
+      <a href="contacts.html">Contacts</a>
+    </nav>
+    <div class="hdr-right">
+      <a class="account" href="account.html" aria-label="account">
+        <span>Account</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="wrap contacts-main">
+    <section class="contact-card card-soft">
+      <p class="page-kicker">Contacts</p>
+      <h1 class="contact-title">Talk to AEROAL</h1>
+      <p class="page-intro">For booking support, partnership requests or general questions, use the channels below. This version avoids a broken map dependency and keeps the page reliable.</p>
+      <div class="contact-grid">
+        <p class="contact-line"><strong>Email:</strong> info@aeroalaero.com</p>
+        <p class="contact-line"><strong>Support:</strong> support@aeroalaero.com</p>
+        <p class="contact-line"><strong>Telegram:</strong> @aeroalaero</p>
+        <p class="contact-line"><strong>Community:</strong> Discord and Roblox links in the footer</p>
+      </div>
+      <div class="contact-actions">
+        <a class="btn-link" href="https://maps.apple.com/?q=AEROAL" target="_blank" rel="noopener">Open in Apple Maps</a>
+        <a class="btn-link" href="https://yandex.com/maps/?text=AEROAL" target="_blank" rel="noopener">Open in Yandex Maps</a>
+      </div>
+      <div class="map-frame">
+        <div id="contactMap" class="map-canvas map-canvas--interactive" aria-label="Interactive contact map"></div>
+        <div id="contactMapFallback" class="map-canvas map-canvas--placeholder hidden" aria-live="polite">
+          <strong>AEROAL support hub</strong>
+          <span>Online-first operations</span>
+          <span>Response is fastest when you include your PNR.</span>
+        </div>
+      </div>
+      <p id="contactMapStatus" class="contact-note">Trying Apple Maps first. If Apple token is not configured, the page automatically falls back to Yandex Maps.</p>
+    </section>
+  </main>
+
+  <footer class="ftr">
+    <div class="ftr-top">
+      <img src="logo.png" alt="AEROAL" class="footer-logo" />
+      <div class="contacts">
+        <a href="https://t.me/flyaeroal">Telegram</a>
+        <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+        <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+      </div>
+      <div class="cols">
+        <div>
+          <h4>Services</h4>
+          <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+        </div>
+        <div>
+          <h4>AEROAL Loyalty</h4>
+          <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+        </div>
+        <div>
+          <h4>Info</h4>
+          <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+        </div>
+        <div>
+          <h4>For Business</h4>
+          <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+        </div>
+      </div>
+      <div class="socials">
+        <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+        <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+        <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+        <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+        <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+      </div>
+    </div>
+    <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+  </footer>
+  <script>
+    (function () {
+      const mapEl = document.getElementById("contactMap");
+      const fallbackEl = document.getElementById("contactMapFallback");
+      const statusEl = document.getElementById("contactMapStatus");
+      const appleTokenMeta = document.querySelector('meta[name="apple-maps-token"]');
+      const appleToken = (window.AEROAL_APPLE_MAPS_TOKEN || appleTokenMeta?.content || "").trim();
+      const center = { lat: 55.751244, lng: 37.618423 };
+
+      function setStatus(text) {
+        if (statusEl) statusEl.textContent = text;
+      }
+
+      function showFallback(text) {
+        mapEl.classList.add("hidden");
+        fallbackEl.classList.remove("hidden");
+        setStatus(text);
+      }
+
+      function loadScript(src, attrs = {}) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          Object.entries(attrs).forEach(([key, value]) => {
+            if (value === true) {
+              script.setAttribute(key, "");
+            } else if (value !== false && value != null) {
+              script.setAttribute(key, value);
+            }
+          });
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      async function initAppleMaps() {
+        if (!appleToken) {
+          throw new Error("Apple Maps token is not configured");
+        }
+
+        setStatus("Loading Apple Maps...");
+        await loadScript("https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js", {
+          crossorigin: "anonymous",
+          async: true,
+          "data-libraries": "map,annotations",
+          "data-token": appleToken
+        });
+
+        if (!window.mapkit) {
+          throw new Error("MapKit JS did not initialize");
+        }
+
+        const coordinate = new mapkit.Coordinate(center.lat, center.lng);
+        const region = new mapkit.CoordinateRegion(
+          coordinate,
+          new mapkit.CoordinateSpan(0.12, 0.18)
+        );
+
+        const map = new mapkit.Map("contactMap");
+        map.region = region;
+        map.showsCompass = mapkit.FeatureVisibility.Visible;
+        map.addAnnotation(new mapkit.MarkerAnnotation(coordinate, {
+          title: "AEROAL",
+          subtitle: "Support and contact hub",
+          color: "#145911"
+        }));
+        setStatus("Apple Maps loaded.");
+      }
+
+      async function initYandexMaps() {
+        setStatus("Apple Maps unavailable, loading Yandex Maps...");
+        await loadScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU");
+        if (!window.ymaps) {
+          throw new Error("Yandex Maps did not initialize");
+        }
+
+        await new Promise((resolve) => window.ymaps.ready(resolve));
+        const map = new window.ymaps.Map("contactMap", {
+          center: [center.lat, center.lng],
+          zoom: 10,
+          controls: ["zoomControl", "fullscreenControl"]
+        }, {
+          suppressMapOpenBlock: true
+        });
+
+        const placemark = new window.ymaps.Placemark([center.lat, center.lng], {
+          balloonContentHeader: "AEROAL",
+          balloonContentBody: "Support and contact hub",
+          hintContent: "AEROAL"
+        }, {
+          preset: "islands#darkGreenDotIcon"
+        });
+
+        map.geoObjects.add(placemark);
+        setStatus("Yandex Maps loaded.");
+      }
+
+      initAppleMaps()
+        .catch(() => initYandexMaps())
+        .catch(() => {
+          showFallback("Interactive maps are unavailable right now. Use the Apple Maps or Yandex Maps buttons above.");
+        });
+    })();
+  </script>
+</body>
+</html>

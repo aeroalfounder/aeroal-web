@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL - Routes</title>
+  <link rel="stylesheet" href="style.css?v=20260219e" />
+  <meta name="apple-maps-token" content="" />
+</head>
+<body class="routes-page">
+  <header class="hdr">
+    <div class="hdr-left">
+      <button class="burger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="logo.png" alt="AEROAL" class="logo" />
+    </div>
+    <nav class="hdr-nav">
+      <a href="index.html">Home</a>
+      <a href="flights.html">Flights</a>
+      <a href="services.html">Services</a>
+      <a href="info.html">Info</a>
+      <a href="contacts.html">Contacts</a>
+    </nav>
+    <div class="hdr-right">
+      <a class="account" href="account.html" aria-label="account">
+        <span>Account</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="routes-main routes-layout">
+    <section class="card-soft routes-copy">
+      <p class="page-kicker">Route Network</p>
+      <h1 class="contact-title">Cities shown in the AEROAL network</h1>
+      <p class="page-intro">This map highlights the core destinations currently represented across the website and booking experience. Apple Maps is used when a token is configured, otherwise the page automatically falls back to Yandex Maps.</p>
+      <div class="route-city-list" id="routeCityList"></div>
+      <p id="routesMapStatus" class="contact-note">Trying Apple Maps first. If Apple token is not configured, the page automatically falls back to Yandex Maps.</p>
+    </section>
+
+    <section class="card-soft routes-map-card">
+      <div id="routesMap" class="routes-map" aria-label="AEROAL routes map"></div>
+      <div id="routesMapFallback" class="map-canvas map-canvas--placeholder hidden" aria-live="polite">
+        <strong>AEROAL route map</strong>
+        <span>Interactive maps are unavailable right now.</span>
+        <span>Use the route list to review current cities.</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ftr">
+    <div class="ftr-top">
+      <img src="logo.png" alt="AEROAL" class="footer-logo" />
+      <div class="contacts">
+        <a href="https://t.me/flyaeroal">Telegram</a>
+        <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+        <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+      </div>
+      <div class="cols">
+        <div>
+          <h4>Services</h4>
+          <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+        </div>
+        <div>
+          <h4>AEROAL Loyalty</h4>
+          <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+        </div>
+        <div>
+          <h4>Info</h4>
+          <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+        </div>
+        <div>
+          <h4>For Business</h4>
+          <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+        </div>
+      </div>
+      <div class="socials">
+        <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+        <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+        <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+        <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+        <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+      </div>
+    </div>
+    <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+  </footer>
+
+  <script>
+    (function () {
+      const mapEl = document.getElementById("routesMap");
+      const fallbackEl = document.getElementById("routesMapFallback");
+      const statusEl = document.getElementById("routesMapStatus");
+      const cityListEl = document.getElementById("routeCityList");
+      const appleTokenMeta = document.querySelector('meta[name="apple-maps-token"]');
+      const appleToken = (window.AEROAL_APPLE_MAPS_TOKEN || appleTokenMeta?.content || "").trim();
+
+      const routes = [
+        { code: "SVO", city: "Moscow", country: "Russia", lat: 55.9726, lng: 37.4146, hub: true },
+        { code: "AYT", city: "Antalya", country: "Turkey", lat: 36.8987, lng: 30.8005 },
+        { code: "DXB", city: "Dubai", country: "UAE", lat: 25.2532, lng: 55.3657 },
+        { code: "BKK", city: "Bangkok", country: "Thailand", lat: 13.69, lng: 100.7501 }
+      ];
+
+      const routePairs = [
+        ["SVO", "AYT"],
+        ["SVO", "DXB"],
+        ["SVO", "BKK"]
+      ];
+
+      const routeIndex = Object.fromEntries(routes.map((route) => [route.code, route]));
+
+      function setStatus(text) {
+        if (statusEl) statusEl.textContent = text;
+      }
+
+      function showFallback(text) {
+        mapEl.classList.add("hidden");
+        fallbackEl.classList.remove("hidden");
+        setStatus(text);
+      }
+
+      function loadScript(src, attrs = {}) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          Object.entries(attrs).forEach(([key, value]) => {
+            if (value === true) {
+              script.setAttribute(key, "");
+            } else if (value !== false && value != null) {
+              script.setAttribute(key, value);
+            }
+          });
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      function renderCityList() {
+        cityListEl.innerHTML = routes.map((route) => `
+          <article class="route-city-card">
+            <div>
+              <strong>${route.city}</strong>
+              <span>${route.code} · ${route.country}</span>
+            </div>
+            <em>${route.hub ? "Hub" : "Destination"}</em>
+          </article>
+        `).join("");
+      }
+
+      async function initAppleMaps() {
+        if (!appleToken) {
+          throw new Error("Apple Maps token is not configured");
+        }
+
+        setStatus("Loading Apple Maps...");
+        await loadScript("https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js", {
+          crossorigin: "anonymous",
+          async: true,
+          "data-libraries": "map,annotations",
+          "data-token": appleToken
+        });
+
+        if (!window.mapkit) {
+          throw new Error("MapKit JS did not initialize");
+        }
+
+        const map = new mapkit.Map("routesMap");
+        map.region = new mapkit.CoordinateRegion(
+          new mapkit.Coordinate(35.5, 56.5),
+          new mapkit.CoordinateSpan(35, 80)
+        );
+        map.showsCompass = mapkit.FeatureVisibility.Visible;
+
+        routes.forEach((route) => {
+          map.addAnnotation(new mapkit.MarkerAnnotation(
+            new mapkit.Coordinate(route.lat, route.lng),
+            {
+              title: `${route.city} (${route.code})`,
+              subtitle: route.hub ? "AEROAL hub" : "AEROAL destination",
+              color: route.hub ? "#0b3707" : "#145911"
+            }
+          ));
+        });
+
+        setStatus("Apple Maps loaded.");
+      }
+
+      async function initYandexMaps() {
+        setStatus("Apple Maps unavailable, loading Yandex Maps...");
+        await loadScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU");
+        if (!window.ymaps) {
+          throw new Error("Yandex Maps did not initialize");
+        }
+
+        await new Promise((resolve) => window.ymaps.ready(resolve));
+        const map = new window.ymaps.Map("routesMap", {
+          center: [35.5, 56.5],
+          zoom: 4,
+          controls: ["zoomControl", "fullscreenControl"]
+        }, {
+          suppressMapOpenBlock: true
+        });
+
+        routes.forEach((route) => {
+          const placemark = new window.ymaps.Placemark([route.lat, route.lng], {
+            balloonContentHeader: `${route.city} (${route.code})`,
+            balloonContentBody: route.hub ? "AEROAL hub" : "AEROAL destination",
+            hintContent: `${route.city} (${route.code})`
+          }, {
+            preset: route.hub ? "islands#darkGreenDotIcon" : "islands#greenDotIcon"
+          });
+          map.geoObjects.add(placemark);
+        });
+
+        routePairs.forEach(([fromCode, toCode]) => {
+          const from = routeIndex[fromCode];
+          const to = routeIndex[toCode];
+          if (!from || !to) return;
+          const line = new window.ymaps.Polyline([
+            [from.lat, from.lng],
+            [to.lat, to.lng]
+          ], {
+            balloonContent: `${from.city} → ${to.city}`
+          }, {
+            strokeColor: "#145911",
+            strokeWidth: 3,
+            strokeOpacity: 0.75
+          });
+          map.geoObjects.add(line);
+        });
+
+        setStatus("Yandex Maps loaded.");
+      }
+
+      renderCityList();
+
+      initAppleMaps()
+        .catch(() => initYandexMaps())
+        .catch(() => {
+          showFallback("Interactive maps are unavailable right now. Review the route cards on the left.");
+        });
+    })();
+  </script>
+</body>
+</html>

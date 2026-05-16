@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL - Account</title>
+  <link rel="stylesheet" href="style.css?v=20260219e" />
+</head>
+<body class="account-page">
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+  <main class="account-shell">
+    <section class="account-auth card-soft">
+      <h1>Account</h1>
+      <p>Sign in with your email. We will send a 6-digit code.</p>
+      <form id="requestCodeForm" class="account-auth-form">
+        <label>
+          <span>Email</span>
+          <input id="accountEmailInput" type="email" placeholder="you@example.com" required />
+        </label>
+        <button type="submit" class="btn-primary">Send code</button>
+      </form>
+      <form id="verifyCodeForm" class="account-auth-form hidden">
+        <label>
+          <span>Verification code</span>
+          <input id="accountCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="123456" required />
+        </label>
+        <button type="submit" class="btn-primary">Confirm</button>
+      </form>
+      <p id="accountAuthMsg" class="booking-message" aria-live="polite"></p>
+    </section>
+
+    <section id="accountDashboard" class="account-dashboard hidden">
+      <aside class="card-soft account-left">
+        <h3>My profile</h3>
+        <p><span>Email</span><strong id="accountUserEmail">-</strong></p>
+        <p><span>Linked bookings</span><strong id="accountBookingCount">0</strong></p>
+        <div id="accountLoyaltyCard" class="account-loyalty-card hidden">
+          <div class="account-loyalty-top">
+            <div>
+              <p class="account-loyalty-label">AEROAL Loyalty</p>
+              <h4 id="loyaltyTierName">Basic</h4>
+            </div>
+            <button id="loyaltyCopyBtn" type="button">Copy</button>
+          </div>
+          <p><span>Member number</span><strong id="loyaltyNumber">-</strong></p>
+          <p><span>Miles balance</span><strong id="loyaltyMiles">0</strong></p>
+          <p><span>Lifetime miles</span><strong id="loyaltyLifetime">0</strong></p>
+          <div class="account-loyalty-progress">
+            <div id="loyaltyProgressBar" class="account-loyalty-progress-bar"></div>
+          </div>
+          <p id="loyaltyProgressText" class="account-loyalty-note">Progress to next tier will appear here.</p>
+          <div class="account-loyalty-actions">
+            <button id="loyaltyRefreshBtn" type="button">Refresh</button>
+          </div>
+        </div>
+        <button id="accountLogoutBtn" type="button">Logout</button>
+      </aside>
+
+      <section class="card-soft account-right">
+        <h2>My bookings</h2>
+        <div class="account-tabs">
+          <button class="account-tab is-active" data-tab="active" type="button">Active bookings</button>
+          <button class="account-tab" data-tab="history" type="button">Booking history</button>
+        </div>
+
+        <form id="accountLinkBookingForm" class="account-link-form">
+          <label>
+            <span>Booking code (PNR)</span>
+            <input id="accountPnrInput" type="text" placeholder="ARL123456" required />
+          </label>
+          <label>
+            <span>Last name</span>
+            <input id="accountLastNameInput" type="text" placeholder="SMITH" required />
+          </label>
+          <button type="submit" class="btn-primary">Link booking</button>
+        </form>
+        <p id="accountLinkMsg" class="booking-message" aria-live="polite"></p>
+
+        <section class="account-loyalty-history">
+          <div class="account-loyalty-history-head">
+            <h3>Loyalty activity</h3>
+            <button id="loyaltyHistoryRefreshBtn" type="button">Refresh</button>
+          </div>
+          <div id="loyaltyHistoryEmpty" class="account-empty">
+            <p>No loyalty transactions yet.</p>
+          </div>
+          <div id="loyaltyHistoryList" class="account-loyalty-history-list hidden"></div>
+        </section>
+
+        <div id="accountBookingEmpty" class="account-empty">
+          <p>No bookings yet. Add booking with PNR and last name.</p>
+        </div>
+        <div id="accountBookingList" class="account-booking-list hidden"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+
+  <script src="account.js?v=20260219e"></script>
+</body>
+</html>

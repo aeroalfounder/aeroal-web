@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #0b0f14;
+  font-family: system-ui;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  text-align: center;
+}
+
+.amount {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+button {
+  padding: 14px 32px;
+  background: #00aaff;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0088dd;
+}
+</style>
+</head>
+
+<body>
+<header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+<div class="box">
+  <div id="amount" class="amount">...</div>
+  <button onclick="withdraw()">Withdraw</button>
+</div>
+
+<script>
+// Проверка входа
+const user = localStorage.getItem("loggedUser");
+if (!user) {
+  window.location.href = "index.html";
+}
+
+// Балансы
+const balances = {
+  user1: "5600 R$",
+  user2: "0 R$"
+};
+
+// Вывод суммы по аккаунту
+document.getElementById("amount").textContent =
+  balances[user] ?? "0 R$";
+
+function withdraw() {
+  alert("Withdrawal request sent");
+}
+</script>
+
+<footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+</body>
+</html>

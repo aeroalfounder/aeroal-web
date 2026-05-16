@@ -1,0 +1,52 @@
+[
+  {
+    "flight_number": "ARL 6841",
+    "origin": "SVO",
+    "destination": "AYT",
+    "departure": "2026-03-01 19:00",
+    "arrival": "2026-03-01 19:45",
+    "aircraft": "Airbus A350-1000",
+    "fares_rub": { "economy": 0, "comfort": 200, "business": 550, "first": 850 },
+    "seats": { "economy": 50, "comfort": 10, "business": 10, "first": 5 }
+  },
+  {
+    "flight_number": "ARL",
+    "origin": "10101110010",
+    "destination": "10101110010",
+    "departure": "00:00",
+    "arrival": "00:00",
+    "aircraft": "010110110",
+    "fares_rub": { "economy": 0, "comfort": 0, "business": 0, "first": 0 },
+    "seats": { "economy": 0, "comfort": 0, "business": 0, "first": 0 }
+  },
+  {
+    "flight_number": "ARL",
+    "origin": "10101110010",
+    "destination": "10101110010",
+    "departure": "00:00",
+    "arrival": "00:00",
+    "aircraft": "010110110",
+    "fares_rub": { "economy": 0, "comfort": 0, "business": 0, "first": 0 },
+    "seats": { "economy": 0, "comfort": 0, "business": 0, "first": 0 }
+  },
+  {
+    "flight_number": "ARL",
+    "origin": "10101110010",
+    "destination": "10101110010",
+    "departure": "00:00",
+    "arrival": "00:00",
+    "aircraft": "010110110",
+    "fares_rub": { "economy": 0, "comfort": 0, "business": 0, "first": 0 },
+    "seats": { "economy": 0, "comfort": 0, "business": 0, "first": 0 }
+  },
+  {
+    "flight_number": "ARL",
+    "origin": "10101110010",
+    "destination": "10101110010",
+    "departure": "00:00",
+    "arrival": "00:00",
+    "aircraft": "010110110",
+    "fares_rub": { "economy": 0, "comfort": 0, "business": 0, "first": 0 },
+    "seats": { "economy": 0, "comfort": 0, "business": 0, "first": 0 }
+  }
+]

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AEROAL</title>
+  <link rel="preload" href="GolosText-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="LeksaSansWeb-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="Emirates-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="style.css?v=20260219b" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- Slider -->
+<section class="slider">
+  <div class="slides">
+    <img src="issue.png" class="slide active" alt="issue">
+    <img src="slide1.jpg" class="slide" alt="AEROAL route showcase">
+    <img src="promo2.png" class="slide" alt="AEROAL destination promo">
+  </div>
+
+  <button class="sl-btn prev" aria-label="prev">‹</button>
+  <button class="sl-btn next" aria-label="next">›</button>
+</section>
+
+  <!-- Search widget -->
+  <main class="wrap">
+    <section class="search-card">
+      <h1 data-i18n="searchTitle">Find your flight</h1>
+      <form id="searchForm" class="grid" action="results.html" method="get">
+        <div class="fld">
+          <label for="from" data-i18n="from">From</label>
+          <input id="from" name="from" type="text" placeholder="MOW / Moscow" autocomplete="on">
+          <div class="suggest" id="fromSuggest"></div>
+        </div>
+        <button class="swap" type="button" id="swap" aria-label="swap">
+          ⇄
+        </button>
+        <div class="fld"> 
+          <label for="to" data-i18n="to">To</label>
+          <input id="to" name="to" type="text" placeholder="DXB / Dubai" autocomplete="on">
+          <div class="suggest" id="toSuggest"></div>
+        </div>
+        <div class="fld">
+          <label for="dep" data-i18n="depart">Departue</label>
+          <input id="dep" name="date" type="date">
+        </div>
+        <div class="fld">
+          <label for="ret" data-i18n="return">Return</label>
+          <input id="ret" name="return" type="date">
+        </div>
+        <div class="fld">
+          <label for="pax" data-i18n="paxClass">Passengers / Class</label>
+          <input id="pax" name="pax" type="text" value="1, Economy" readonly>
+          <div class="pax-pop" id="paxPop">
+            <div class="row">
+              <span data-i18n="adults">Adults</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="adults">1</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row">
+              <span data-i18n="children">Children</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="children">0</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row">
+              <span data-i18n="infants">Infants</span>
+              <div class="stepper">
+                <button type="button" data-act="minus">−</button>
+                <span class="val" data-type="infants">0</span>
+                <button type="button" data-act="plus">+</button>
+              </div>
+            </div>
+            <div class="row classes">
+              <label><input type="radio" name="cls" value="economy" checked><span data-i18n="economy">Economy</span></label>
+              <label><input type="radio" name="cls" value="premium"><span data-i18n="premium">Comfort</span></label>
+              <label><input type="radio" name="cls" value="business"><span data-i18n="business">Business</span></label>
+              <label><input type="radio" name="cls" value="first"><span data-i18n="first">First</span></label>
+              <label><input type="radio" name="cls" value="elite"><span data-i18n="elite">Élite</span></label>
+            </div>
+            <button type="button" class="btn-apply" id="paxApply" data-i18n="apply">Apply</button>
+          </div>
+        </div>
+        <button class="btn-find" type="submit" data-i18n="find">Find</button>
+      </form>
+    </section>
+
+    <!-- Specials -->
+    <section class="specials">
+      <h2 data-i18n="specials">Specials</h2>
+      <div class="cards-3">
+        <a class="card" data-animate href="results.html?from=MOW&to=AYT"><img src="promo1.png" alt="Moscow to Antalya"><span>MOW → AYT</span></a>
+        <a class="card" data-animate href="results.html?from=MOW&to=DXB"><img src="promo2.png" alt="Moscow to Dubai"><span>MOW → DXB</span></a>
+        <a class="card" data-animate href="results.html?from=MOW&to=BKK"><img src="slide1.jpg" alt="Moscow to Bangkok"><span>MOW → BKK</span></a>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+      <div class="stats-grid">
+        <div class="stat-card" data-animate data-count="38">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Flights completed</div>
+        </div>
+        <div class="stat-card" data-animate data-count="260">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Passengers transported</div>
+        </div>
+        <div class="stat-card" data-animate data-count="2">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Years in operation</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+      <h2 data-i18n="services">Services</h2>
+      <div class="cards-3">
+        <a class="card" data-animate href="luggage.html"><img src="service1.png" alt="Baggage services"><span data-i18n="baggage">Baggage</span></a>
+        <a class="card" data-animate href="meal.html"><img src="service2.png" alt="Meal services"><span data-i18n="meals">Meals</span></a>
+        <a class="card" data-animate href="services.html"><img src="service3.png" alt="Lounge services"><span data-i18n="lounge">Lounge</span></a>
+      </div>
+    </section>
+
+    <!-- Info -->
+    <section class="info">
+      <h2 data-i18n="information">Info</h2>
+      <div class="cards-3">
+        <a class="card" data-animate href="rules.html"><img src="info1.png" alt=""><span data-i18n="rules">Rules</span></a>
+        <a class="card" data-animate href="loyalty.html"><img src="info2.png" alt=""><span data-i18n="loyalty">AEROAL Loyalty</span></a>
+        <a class="card" data-animate href="help.html"><img src="info3.png" alt=""><span data-i18n="help">Help</span></a>
+      </div>
+      <div class="cards-3">
+        <a class="card" data-animate href="safety.html"><img src="info4.png" alt=""><span data-i18n="safety">Safety</span></a>
+        <a class="card" data-animate href="docs.html"><img src="info5.png" alt=""><span data-i18n="docs">Documents</span></a>
+        <a class="card" data-animate href="contacts.html"><img src="info6.png" alt="Contacts"><span data-i18n="contacts">Contacts</span></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+
+  <script src="app.js?v=20260219c"></script>
+</body>
+</html>

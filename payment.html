@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL - Payment</title>
+  <link rel="stylesheet" href="style.css?v=20260219e" />
+</head>
+<body class="payment-body payment-page">
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+  <main class="payment-shell">
+    <section class="card-soft payment-lookup">
+      <div>
+        <p class="payment-eyebrow">Payment center</p>
+        <h1>Pay your booking</h1>
+        <p class="payment-help">Enter your booking code to open payment details, or continue with the booking you just selected.</p>
+      </div>
+      <form id="paymentLookupForm" class="payment-lookup-form">
+        <label>
+          <span>Booking code (PNR)</span>
+          <input id="paymentPnrInput" type="text" maxlength="10" placeholder="ARL92Q" required />
+        </label>
+        <button type="submit" class="btn-primary">Load booking</button>
+      </form>
+      <p id="paymentLookupMsg" class="payment-message" aria-live="polite"></p>
+    </section>
+
+    <section id="paymentWorkspace" class="payment-workspace hidden" aria-live="polite">
+      <section class="payment-grid">
+        <article class="card-soft payment-summary">
+          <h3>Booking summary</h3>
+          <div class="payment-summary-grid">
+            <p><span>Booking</span><strong id="sumPnr">-</strong></p>
+            <p><span>Route</span><strong id="sumRoute">-</strong></p>
+            <p><span>Flight</span><strong id="sumFlight">-</strong></p>
+            <p><span>Departure</span><strong id="sumDeparture">-</strong></p>
+            <p><span>Cabin</span><strong id="sumCabin">-</strong></p>
+            <p><span>Passengers</span><strong id="sumPax">-</strong></p>
+          </div>
+        </article>
+
+        <aside class="card-soft payment-totals">
+          <h3>Amount due</h3>
+          <div class="price-lines">
+            <p><span>Base fare</span><strong id="payBase">0 $</strong></p>
+            <p><span>Extras</span><strong id="payFee">0 $</strong></p>
+            <p><span>Discounts / taxes</span><strong id="payTax">0 $</strong></p>
+            <p class="total"><span>Total</span><strong id="payTotal">0 $</strong></p>
+          </div>
+          <p id="payStatus" class="payment-status payment-status--pending">Status: Pending payment</p>
+        </aside>
+      </section>
+
+      <section class="card-soft payment-methods">
+        <h3>Payment method</h3>
+        <p class="panel-lead">Card is temporarily unavailable. Crypto and Robux are available.</p>
+        <div class="payment-method-cards" role="group" aria-label="Payment methods">
+          <button id="cardStubBtn" class="payment-method-card is-disabled" type="button" disabled>
+            <span>Card</span>
+            <small>Coming soon</small>
+          </button>
+          <button id="cryptoPayBtn" class="payment-method-card" type="button">
+            <span>Crypto</span>
+            <small>Open Crypto Bot invoice</small>
+          </button>
+          <button id="robuxPayBtn" class="payment-method-card is-robux" type="button">
+            <span>Pay with Robux</span>
+            <small>Open external payment</small>
+          </button>
+        </div>
+        <p id="paymentMethodMsg" class="payment-message" aria-live="polite"></p>
+
+        <div class="payment-actions">
+          <button id="cancelPaymentBtn" type="button">Back to booking</button>
+        </div>
+      </section>
+
+      <section id="paymentResult" class="card-soft payment-result hidden">
+        <h3>External payment started</h3>
+        <p id="paymentResultText">Robux payment page opened in a new tab.</p>
+        <a class="btn-primary" id="returnBookingBtn" href="booking.html">Back to booking</a>
+      </section>
+    </section>
+  </main>
+
+  <footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+
+  <script src="payment.js?v=20260219e"></script>
+</body>
+</html>

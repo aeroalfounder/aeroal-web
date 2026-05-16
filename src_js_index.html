@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #0b0f14;
+  font-family: system-ui;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: #11161d;
+  padding: 40px;
+  border-radius: 14px;
+  width: 320px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+label {
+  font-size: 15px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 16px;
+  background: #1a222d;
+  color: #fff;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #00aaff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+button:hover {
+  background: #0088dd;
+}
+
+#error {
+  margin-top: 10px;
+  text-align: center;
+  color: #ff4444;
+  font-size: 15px;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+<header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+<div class="login-box">
+  <h2>GetPaid - Pilots</h2>
+
+  <label>Username</label>
+  <input type="text" id="username">
+
+  <label>Password</label>
+  <input type="password" id="password">
+
+  <button onclick="login()">Log in</button>
+
+  <div id="error">Invalid username or password</div>
+</div>
+
+<script>
+function login() {
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
+
+  // ===== разрешённые аккаунты =====
+  const acc1 = { user: "user1", pass: "pass1" };
+  const acc2 = { user: "user2", pass: "pass2" };
+
+  if ((u === acc1.user && p === acc1.pass) ||
+      (u === acc2.user && p === acc2.pass)) {
+
+      // вход успешный
+      localStorage.setItem("loggedUser", u);
+      window.location.href = "dashboard.html";
+
+  } else {
+      document.getElementById("error").style.display = "block";
+  }
+}
+</script>
+
+<footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEROAL - Manage Booking</title>
+  <link rel="stylesheet" href="style.css?v=20260219e" />
+</head>
+<body class="booking-body booking-page">
+  <header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+
+  <main class="booking-shell">
+    <section class="booking-lookup card-soft">
+      <div>
+        <p class="booking-eyebrow">Manage Booking</p>
+        <h1>Find your booking</h1>
+        <p class="booking-help">Enter your PNR and passenger last name.</p>
+      </div>
+      <form id="lookupForm" class="booking-lookup-form">
+        <label>
+          <span>PNR / Booking code</span>
+          <input id="pnrInput" name="pnr" type="text" placeholder="ARL92Q" maxlength="8" required />
+        </label>
+        <label>
+          <span>Last name</span>
+          <input id="lastNameInput" name="lastName" type="text" placeholder="IVANOV" required />
+        </label>
+        <button type="submit">Open booking</button>
+      </form>
+      <p id="lookupMsg" class="booking-message" aria-live="polite"></p>
+    </section>
+
+    <section id="bookingWorkspace" class="booking-workspace hidden" aria-live="polite">
+      <section class="card-soft booking-create">
+        <h3>Passenger details</h3>
+        <div class="booking-create-grid">
+          <label>
+            <span>Passenger full name</span>
+            <input id="bookPassengerName" type="text" placeholder="JOHN SMITH" />
+          </label>
+          <label>
+            <span>Last name</span>
+            <input id="bookLastName" type="text" placeholder="SMITH" />
+          </label>
+        </div>
+        <p class="panel-lead">Booking is created only after you review details and click <strong>Book now</strong>.</p>
+      </section>
+
+      <section class="booking-header card-soft">
+        <div>
+          <p id="bookingStatusTag" class="booking-status-tag">Confirmed</p>
+          <h2 id="bookingTitle">Booking ARL92Q</h2>
+          <p id="bookingRoute">Moscow (SVO) → Dubai (DXB)</p>
+          <p id="bookingMeta">20 Mar 2026 · 2 passengers · Economy</p>
+        </div>
+        <div class="booking-actions-top">
+          <button type="button" id="sendItineraryBtn">Send itinerary receipt</button>
+          <button type="button" id="checkinBtn">Online check-in</button>
+        </div>
+      </section>
+
+      <section class="booking-grid">
+        <article class="card-soft booking-main">
+          <h3>Full flight details</h3>
+          <div id="segmentList" class="segment-list"></div>
+        </article>
+
+        <aside class="card-soft booking-side">
+          <h3>Fare and payment</h3>
+          <div class="promo-box">
+            <label>
+              <span>Promo code</span>
+              <div class="promo-row">
+                <input id="promoCodeInput" type="text" placeholder="SAVE10" />
+                <button type="button" id="applyPromoBtn">Apply</button>
+              </div>
+            </label>
+            <p id="promoMsg" class="booking-message" aria-live="polite"></p>
+          </div>
+          <div class="price-lines">
+            <p><span>Base fare</span><strong id="baseFare">0 $</strong></p>
+            <p><span>Extra baggage</span><strong id="bagFare">0 $</strong></p>
+            <p><span>Meals</span><strong id="mealFare">0 $</strong></p>
+            <p><span>Promo discount</span><strong id="promoDiscount">0 $</strong></p>
+            <p class="total"><span>Total</span><strong id="totalFare">0 $</strong></p>
+          </div>
+          <p id="paymentState" class="payment-state">Payment status: Paid</p>
+          <button type="button" id="payNowBtn" class="btn-primary">Pay now</button>
+        </aside>
+      </section>
+
+      <section class="booking-manage card-soft">
+        <h3>Booking controls</h3>
+
+        <div class="manage-tabs" role="tablist" aria-label="Booking controls">
+          <button class="manage-tab is-active" data-tab="passengers" type="button">Passengers</button>
+          <button class="manage-tab" data-tab="seats" type="button">Seats</button>
+          <button class="manage-tab" data-tab="bags" type="button">Baggage</button>
+          <button class="manage-tab" data-tab="meals" type="button">Meals</button>
+          <button class="manage-tab" data-tab="contacts" type="button">Contacts</button>
+          <button class="manage-tab" data-tab="rules" type="button">Rules / Refund</button>
+        </div>
+
+        <div class="manage-panel" id="panel-passengers">
+          <div id="passengerList"></div>
+        </div>
+
+        <div class="manage-panel hidden" id="panel-seats">
+          <p class="panel-lead">Select seats per segment.</p>
+          <div id="seatList"></div>
+        </div>
+
+        <div class="manage-panel hidden" id="panel-bags">
+          <p class="panel-lead">Add extra checked baggage for each passenger.</p>
+          <div id="bagList"></div>
+        </div>
+
+        <div class="manage-panel hidden" id="panel-meals">
+          <p class="panel-lead">Pre-order meals at least 24h before departure.</p>
+          <div id="mealList"></div>
+        </div>
+
+        <div class="manage-panel hidden" id="panel-contacts">
+          <form id="contactsForm" class="contacts-form">
+            <label>
+              <span>Email</span>
+              <input type="email" id="contactEmail" required />
+            </label>
+            <label>
+              <span>Phone</span>
+              <input type="tel" id="contactPhone" required />
+            </label>
+            <label class="wide">
+              <span>Booking note</span>
+              <textarea id="contactNote" rows="3"></textarea>
+            </label>
+            <button type="submit" class="btn-primary">Save contacts</button>
+          </form>
+        </div>
+
+        <div class="manage-panel hidden" id="panel-rules">
+          <ul class="rules-list">
+            <li>Changes are available before departure and may include a fare fee.</li>
+            <li>Economy refunds are partial, Business/First fares are more flexible.</li>
+            <li>Name changes are not available after ticket issuance.</li>
+            <li>Use the action below to cancel booking with confirmation.</li>
+          </ul>
+          <button type="button" id="cancelBookingBtn" class="btn-danger">Cancel booking</button>
+        </div>
+      </section>
+
+      <section class="card-soft booking-bottom-actions">
+        <button type="button" id="bookNowBtn" class="btn-primary">Book now</button>
+        <button type="button" id="saveAllBtn" class="btn-primary">Save all changes</button>
+        <button type="button" id="resetChangesBtn">Reset changes</button>
+        <p id="saveMsg" class="booking-message" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+
+  <script src="booking.js?v=20260219e"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+    "name": "aeroal",
+    "version": "2.0.0",
+    "description": "Официальный сайт AEROAL, стильный и минималистичный",
+    "main": "index.html",
+    "scripts": {
+      "start": "live-server --open=./index.html",
+      "build-css": "postcss css/style.css -o dist/style.css",
+      "watch-css": "postcss css/style.css -o dist/style.css --watch",
+      "lint": "eslint js/*.js",
+      "test": "echo \"No tests yet\""
+    },
+    "keywords": ["AEROAL", "airline", "website", "roblox", "tickets"],
+    "author": "Arsenii Lukhtan",
+    "license": "MIT",
+    "devDependencies": {
+      "eslint": "^8.50.0",
+      "live-server": "^1.2.2",
+      "postcss": "^8.4.35",
+      "postcss-cli": "^10.1.0",
+      "autoprefixer": "^10.4.15"
+    },
+    "dependencies": {
+      "axios": "^1.6.0"
+    }
+  }

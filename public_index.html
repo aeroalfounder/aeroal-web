@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: 'GolosText';
+            src: url('Golos-Text_Medium - копия.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f8f8, #eaeaea, #ffffff);
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
+            font-family: 'GolosText', sans-serif;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            padding: 50px 60px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity:0; transform: translateY(20px);}
+            to {opacity:1; transform: translateY(0);}
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c2c2c;
+        }
+
+        input[type="text"] {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 8px;
+            padding: 12px 28px;
+            font-size: 16px;
+            color: #2c2c2c;
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.65);
+            transform: scale(1.03);
+        }
+
+        .hidden {display: none;}
+
+        #bookingInfo {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #2c2c2c;
+        }
+
+        #paymentStatus {
+            margin-top: 15px;
+            font-size: 18px;
+            color: green;
+        }
+
+        @media (max-width: 480px) {
+            .glass-container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-left">
+    <button class="burger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <img src="logo.png" alt="AEROAL" class="logo" />
+  </div>
+  <nav class="hdr-nav">
+    <a href="index.html">Home</a>
+    <a href="flights.html">Flights</a>
+    <a href="services.html">Services</a>
+    <a href="info.html">Info</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="hdr-right">
+    <a class="account" href="account.html" aria-label="account">
+      <span>Account</span>
+    </a>
+  </div>
+</header>
+
+    <div class="glass-container">
+        <h1>Payment</h1>
+        <!-- Форма брони -->
+        <input type="text" id="bookingNumber" placeholder="Booking number">
+        <button class="btn" id="checkBookingBtn">Check Booking</button>
+
+        <!-- Сумма и выбор оплаты -->
+        <div id="paymentOptions" class="hidden">
+            <p id="bookingInfo"></p>
+            <button class="btn" id="payCardBtn">Pay with Card</button>
+            <button class="btn" id="payCryptoBtn">Pay with Crypto</button>
+        </div>
+
+        <!-- Статус оплаты -->
+        <div id="paymentStatus" class="hidden">
+            <p>Payment successful</p>
+            <p id="finalBookingInfo"></p>
+            <a href="https://t.me/aeroalbookingbot" class="btn" target="_blank">Go to Booking Bot</a>
+        </div>
+    </div>
+
+    <script>
+        const checkBookingBtn = document.getElementById('checkBookingBtn');
+        const paymentOptions = document.getElementById('paymentOptions');
+        const payCardBtn = document.getElementById('payCardBtn');
+        const payCryptoBtn = document.getElementById('payCryptoBtn');
+        const bookingInfo = document.getElementById('bookingInfo');
+        const paymentStatus = document.getElementById('paymentStatus');
+        const finalBookingInfo = document.getElementById('finalBookingInfo');
+
+        let bookingAmount = 0;
+
+        checkBookingBtn.addEventListener('click', () => {
+            const booking = document.getElementById('bookingNumber').value.trim();
+            if (!booking) {
+                alert('Please enter your booking number.');
+                return;
+            }
+            // Пример суммы, можно заменить реальной логикой
+            bookingAmount = 150;
+            bookingInfo.textContent = `Booking: ${booking} | Amount: $${bookingAmount}`;
+            paymentOptions.classList.remove('hidden');
+        });
+
+        payCardBtn.addEventListener('click', () => {
+            alert('Card payment integration coming soon!');
+        });
+
+        payCryptoBtn.addEventListener('click', async () => {
+            const booking = document.getElementById('bookingNumber').value.trim();
+            if (!booking) return;
+
+            try {
+                const response = await fetch('https://api.cryptobot.site/create_payment', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        token: '475515:AAKkwcpzv6903TbPLS80Ift4gw628jW0Lwg',
+                        amount: bookingAmount,
+                        currency: 'USDT,TON',
+                        comment: booking
+                    })
+                });
+
+                const data = await response.json();
+                if (data.pay_url) {
+                    window.open(data.pay_url, '_blank');
+                    paymentStatus.classList.remove('hidden');
+                    finalBookingInfo.textContent = `Booking: ${booking} | Amount: $${bookingAmount}`;
+                } else {
+                    alert('Failed to create crypto payment.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error connecting to CryptoBot API.');
+            }
+        });
+    </script>
+<footer class="ftr">
+  <div class="ftr-top">
+    <img src="logo.png" alt="AEROAL" class="footer-logo" />
+    <div class="contacts">
+      <a href="https://t.me/flyaeroal">Telegram</a>
+      <a href="mailto:info@aeroalaero.com">info@aeroalaero.com</a>
+      <a href="mailto:support@aeroalaero.com">support@aeroalaero.com</a>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Services</h4>
+        <a href="luggage.html">Baggage</a><a href="meal.html">Meals</a><a href="lounge.html">Lounges</a>
+      </div>
+      <div>
+        <h4>AEROAL Loyalty</h4>
+        <a href="account.html">Account</a><a href="tiers.html">Tiers</a><a href="privilege.html">Privilege</a>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <a href="rules.html">Rules</a><a href="docs.html">Documents</a><a href="contacts.html">Contacts</a>
+      </div>
+      <div>
+        <h4>For Business</h4>
+        <a href="forbusiness.html">Corporate sales</a><a href="forbusiness.html">For agents</a><a href="partners.html">For partners</a>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://discord.gg/AQKh2PajjD"><img src="discord.png" alt="Discord" /></a>
+      <a href="https://t.me/aeroalaero"><img src="telegram.png" alt="Telegram" /></a>
+      <a href="https://www.roblox.com/share/g/32810915"><img src="roblox.png" alt="Roblox" /></a>
+      <a href="https://youtube.com/@aeroalaero?si=6j2TT6WgsCx4LMZu"><img src="youtube.png" alt="YouTube" /></a>
+      <a href="https://www.tiktok.com/@aeroalroblox?_t=ZG-8zC1SqmNJdQ&_r=1"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+  <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
+</footer>
+
+</body>
+</html>
