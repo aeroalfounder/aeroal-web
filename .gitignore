@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# JSON
+*.json
+
+# PHP
+*.php
+
+# JS
+*.js
