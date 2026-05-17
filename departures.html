@@ -33,74 +33,10 @@
     <section class="card-soft departures-hero">
       <p class="page-kicker">Departures</p>
       <h1 class="contact-title">Scheduled departures</h1>
-      <p class="page-intro">Current departure blocks are prepared in the live AEROAL style. The exact flight information logic and arrangement can be expanded next.</p>
+      <p class="page-intro">Live departures are loaded from the current flight dataset and shown in the AEROAL departure layout.</p>
     </section>
 
-    <section class="departures-grid">
-      <article class="card-soft departure-card">
-        <div class="departure-top">
-          <div>
-            <p class="departure-time">08:15</p>
-            <h2 class="departure-route">MOW → DXB</h2>
-          </div>
-          <span class="departure-status">Boarding soon</span>
-        </div>
-        <div class="departure-meta">
-          <p><span>Flight</span><strong>ARL 201</strong></p>
-          <p><span>Terminal</span><strong>C</strong></p>
-          <p><span>Gate</span><strong>12</strong></p>
-          <p><span>Aircraft</span><strong>Boeing 777-300ER</strong></p>
-        </div>
-      </article>
-
-      <article class="card-soft departure-card">
-        <div class="departure-top">
-          <div>
-            <p class="departure-time">11:40</p>
-            <h2 class="departure-route">MOW → AYT</h2>
-          </div>
-          <span class="departure-status">On schedule</span>
-        </div>
-        <div class="departure-meta">
-          <p><span>Flight</span><strong>ARL 118</strong></p>
-          <p><span>Terminal</span><strong>B</strong></p>
-          <p><span>Gate</span><strong>07</strong></p>
-          <p><span>Aircraft</span><strong>Airbus A321neo</strong></p>
-        </div>
-      </article>
-
-      <article class="card-soft departure-card">
-        <div class="departure-top">
-          <div>
-            <p class="departure-time">15:05</p>
-            <h2 class="departure-route">MOW → BKK</h2>
-          </div>
-          <span class="departure-status">Check-in open</span>
-        </div>
-        <div class="departure-meta">
-          <p><span>Flight</span><strong>ARL 305</strong></p>
-          <p><span>Terminal</span><strong>D</strong></p>
-          <p><span>Gate</span><strong>18</strong></p>
-          <p><span>Aircraft</span><strong>Boeing 787-9</strong></p>
-        </div>
-      </article>
-
-      <article class="card-soft departure-card">
-        <div class="departure-top">
-          <div>
-            <p class="departure-time">19:20</p>
-            <h2 class="departure-route">MOW → SVO</h2>
-          </div>
-          <span class="departure-status">Final call</span>
-        </div>
-        <div class="departure-meta">
-          <p><span>Flight</span><strong>ARL 090</strong></p>
-          <p><span>Terminal</span><strong>A</strong></p>
-          <p><span>Gate</span><strong>03</strong></p>
-          <p><span>Aircraft</span><strong>Airbus A320</strong></p>
-        </div>
-      </article>
-    </section>
+    <section id="departuresGrid" class="departures-grid"></section>
   </main>
 
   <footer class="ftr">
@@ -139,5 +75,133 @@
     </div>
     <div class="ftr-bottom"><span>made by AEROAL Development</span></div>
   </footer>
+  <script>
+    (function () {
+      const grid = document.getElementById("departuresGrid");
+      const terminalMap = {
+        SVO: "C",
+        AYT: "B",
+        DXB: "D",
+        BKK: "E",
+        PVG: "F"
+      };
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;");
+      }
+
+      function parseDateTime(value) {
+        const raw = String(value || "").trim();
+        if (!raw) return null;
+        const normalized = raw.replace(" ", "T");
+        const date = new Date(normalized);
+        return Number.isNaN(date.getTime()) ? null : date;
+      }
+
+      function formatTime(date) {
+        return date.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      }
+
+      function deriveStatus(date) {
+        const diff = date.getTime() - Date.now();
+        const minutes = Math.round(diff / 60000);
+        if (minutes <= 45) return "Final call";
+        if (minutes <= 120) return "Boarding soon";
+        if (minutes <= 240) return "Check-in open";
+        return "On schedule";
+      }
+
+      function deriveGate(flightNumber) {
+        const digits = String(flightNumber || "").replace(/\D+/g, "");
+        if (!digits) return "--";
+        const gate = (Number(digits.slice(-2)) % 24) + 1;
+        return String(gate).padStart(2, "0");
+      }
+
+      function isValidFlight(row) {
+        return row
+          && /^[A-Z]{3}$/.test(String(row.origin || "").toUpperCase())
+          && /^[A-Z]{3}$/.test(String(row.destination || "").toUpperCase())
+          && parseDateTime(row.departure)
+          && String(row.flight_number || "").trim() !== "";
+      }
+
+      function renderCard(row) {
+        const departureDate = parseDateTime(row.departure);
+        const origin = String(row.origin || "").toUpperCase();
+        const destination = String(row.destination || "").toUpperCase();
+        const terminal = terminalMap[origin] || "A";
+        const gate = deriveGate(row.flight_number);
+        const status = deriveStatus(departureDate);
+
+        return `
+          <article class="card-soft departure-card">
+            <div class="departure-top">
+              <div>
+                <p class="departure-time">${escapeHtml(formatTime(departureDate))}</p>
+                <h2 class="departure-route">${escapeHtml(origin)} → ${escapeHtml(destination)}</h2>
+              </div>
+              <span class="departure-status">${escapeHtml(status)}</span>
+            </div>
+            <div class="departure-meta">
+              <p><span>Flight</span><strong>${escapeHtml(row.flight_number)}</strong></p>
+              <p><span>Terminal</span><strong>${escapeHtml(terminal)}</strong></p>
+              <p><span>Gate</span><strong>${escapeHtml(gate)}</strong></p>
+              <p><span>Aircraft</span><strong>${escapeHtml(row.aircraft || "-")}</strong></p>
+            </div>
+          </article>
+        `;
+      }
+
+      fetch("flights.json")
+        .then((response) => response.json())
+        .then((rows) => {
+          const flights = Array.isArray(rows) ? rows.filter(isValidFlight) : [];
+          flights.sort((a, b) => parseDateTime(a.departure) - parseDateTime(b.departure));
+
+          if (!flights.length) {
+            grid.innerHTML = `
+              <article class="card-soft departure-card">
+                <div class="departure-top">
+                  <div>
+                    <p class="departure-time">--:--</p>
+                    <h2 class="departure-route">No live departures</h2>
+                  </div>
+                  <span class="departure-status">Pending update</span>
+                </div>
+                <div class="departure-meta">
+                  <p><span>Flight data</span><strong>flights.json is empty</strong></p>
+                </div>
+              </article>
+            `;
+            return;
+          }
+
+          grid.innerHTML = flights.map(renderCard).join("");
+        })
+        .catch(() => {
+          grid.innerHTML = `
+            <article class="card-soft departure-card">
+              <div class="departure-top">
+                <div>
+                  <p class="departure-time">--:--</p>
+                  <h2 class="departure-route">Departure feed unavailable</h2>
+                </div>
+                <span class="departure-status">Retry later</span>
+              </div>
+              <div class="departure-meta">
+                <p><span>Source</span><strong>flights.json could not be loaded</strong></p>
+              </div>
+            </article>
+          `;
+        });
+    })();
+  </script>
 </body>
 </html>

@@ -99,13 +99,15 @@
         { code: "SVO", city: "Moscow", country: "Russia", lat: 55.9726, lng: 37.4146, hub: true },
         { code: "AYT", city: "Antalya", country: "Turkey", lat: 36.8987, lng: 30.8005 },
         { code: "DXB", city: "Dubai", country: "UAE", lat: 25.2532, lng: 55.3657 },
-        { code: "BKK", city: "Bangkok", country: "Thailand", lat: 13.69, lng: 100.7501 }
+        { code: "BKK", city: "Bangkok", country: "Thailand", lat: 13.69, lng: 100.7501 },
+        { code: "PVG", city: "Shanghai", country: "China", lat: 31.1443, lng: 121.8083 }
       ];
 
       const routePairs = [
         ["SVO", "AYT"],
         ["SVO", "DXB"],
-        ["SVO", "BKK"]
+        ["SVO", "BKK"],
+        ["SVO", "PVG"]
       ];
 
       const routeIndex = Object.fromEntries(routes.map((route) => [route.code, route]));
