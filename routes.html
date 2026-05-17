@@ -34,17 +34,15 @@
     <section class="card-soft routes-copy">
       <p class="page-kicker">Route Network</p>
       <h1 class="contact-title">Cities shown in the AEROAL network</h1>
-      <p class="page-intro">This map highlights the core destinations currently represented across the website and booking experience. Apple Maps is used when a token is configured, otherwise the page automatically falls back to Yandex Maps.</p>
+      <p class="page-intro">This map highlights the core destinations currently represented across the AEROAL network and booking experience.</p>
       <div class="route-city-list" id="routeCityList"></div>
-      <p id="routesMapStatus" class="contact-note">Trying Apple Maps first. If Apple token is not configured, the page automatically falls back to Yandex Maps.</p>
     </section>
 
     <section class="card-soft routes-map-card">
       <div id="routesMap" class="routes-map" aria-label="AEROAL routes map"></div>
       <div id="routesMapFallback" class="map-canvas map-canvas--placeholder hidden" aria-live="polite">
         <strong>AEROAL route map</strong>
-        <span>Interactive maps are unavailable right now.</span>
-        <span>Use the route list to review current cities.</span>
+        <span>Current destination network</span>
       </div>
     </section>
   </main>
@@ -90,7 +88,6 @@
     (function () {
       const mapEl = document.getElementById("routesMap");
       const fallbackEl = document.getElementById("routesMapFallback");
-      const statusEl = document.getElementById("routesMapStatus");
       const cityListEl = document.getElementById("routeCityList");
       const appleTokenMeta = document.querySelector('meta[name="apple-maps-token"]');
       const appleToken = (window.AEROAL_APPLE_MAPS_TOKEN || appleTokenMeta?.content || "").trim();
@@ -112,14 +109,9 @@
 
       const routeIndex = Object.fromEntries(routes.map((route) => [route.code, route]));
 
-      function setStatus(text) {
-        if (statusEl) statusEl.textContent = text;
-      }
-
-      function showFallback(text) {
+      function showFallback() {
         mapEl.classList.add("hidden");
         fallbackEl.classList.remove("hidden");
-        setStatus(text);
       }
 
       function loadScript(src, attrs = {}) {
@@ -156,7 +148,6 @@
           throw new Error("Apple Maps token is not configured");
         }
 
-        setStatus("Loading Apple Maps...");
         await loadScript("https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js", {
           crossorigin: "anonymous",
           async: true,
@@ -185,12 +176,9 @@
             }
           ));
         });
-
-        setStatus("Apple Maps loaded.");
       }
 
       async function initYandexMaps() {
-        setStatus("Apple Maps unavailable, loading Yandex Maps...");
         await loadScript("https://api-maps.yandex.ru/2.1/?lang=ru_RU");
         if (!window.ymaps) {
           throw new Error("Yandex Maps did not initialize");
@@ -232,8 +220,6 @@
           });
           map.geoObjects.add(line);
         });
-
-        setStatus("Yandex Maps loaded.");
       }
 
       renderCityList();
@@ -241,7 +227,7 @@
       initAppleMaps()
         .catch(() => initYandexMaps())
         .catch(() => {
-          showFallback("Interactive maps are unavailable right now. Review the route cards on the left.");
+          showFallback();
         });
     })();
   </script>
